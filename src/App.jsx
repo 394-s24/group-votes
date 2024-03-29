@@ -49,30 +49,39 @@ function App() {
     const unsubscribe = onSnapshot(promptsCollectionRef, (snapshot) => {
       const updatedPrompts = [];
       const updatedVotes = {};
+      const promptIds = {}; // New object to store ids
   
       snapshot.forEach((doc) => {
         const { text, votes } = doc.data();
         updatedPrompts.push(text);
         updatedVotes[text] = votes;
+        promptIds[text] = doc.id; // Store the document ID using the text as key
       });
   
       setPrompts(updatedPrompts);
       setVotes(updatedVotes);
+      setPromptIds(promptIds); // Assuming you have a state to store these IDs
     });
   
     return unsubscribe;
   }, []);
 
-  const handleVote = async (promptText, option) => {
-    try {
-      const promptDocRef = doc(promptsCollectionRef, prompts.indexOf(promptText));
-      await updateDoc(promptDocRef, {
-        [`votes.${option}`]: (votes[promptText][option] || 0) + 1,
-      });
-    } catch (error) {
-      console.error("Error updating votes: ", error);
+   
+const handleVote = async (promptText, option) => {
+  try {
+    const promptDocId = promptIds[promptText]; // Get the document ID from the stored IDs
+    if (!promptDocId) {
+      console.error("No document found for this prompt.");
+      return;
     }
-  };
+    const promptDocRef = doc(promptsCollectionRef, promptDocId);
+    await updateDoc(promptDocRef, {
+      [`votes.${option}`]: (votes[promptText][option] || 0) + 1,
+    });
+  } catch (error) {
+    console.error("Error updating votes: ", error);
+  }
+};
   
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
