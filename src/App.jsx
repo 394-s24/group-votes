@@ -35,16 +35,17 @@ function App() {
     setPrompt(event.target.value);
   };
 
-  const handlePostPrompt = () => {
+  const handlePostPrompt = async () => {
     if (prompt.trim() !== '') {
-      const newPrompts = [...prompts, prompt];
-      console.log('Before setPrompts:', prompts); // Check the previous state
-      console.log('New prompt to add:', prompt); // Check what you're trying to add
-      setPrompts(newPrompts);
-      console.log('After setPrompts:', newPrompts); // Check the updated state
-      setPrompt('');
-    } else {
-      alert('Please enter a prompt.');
+      try {
+        await addDoc(promptsCollectionRef, {
+          text: prompt,
+          votes: { yes: 0, no: 0, maybe: 0 },
+        });
+        setPrompt('');
+      } catch (error) {
+        console.error("Error adding prompt: ", error);
+      }
     }
   };
 
