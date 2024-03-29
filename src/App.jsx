@@ -1,45 +1,30 @@
-import { useState } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-const App = () => {
-  const [count, setCount] = useState(0);
+function App() {
+  const [prompt, setPrompt] = useState("Do you like this prompt?");
+  const [votes, setVotes] = useState({ yes: 0, no: 0, maybe: 0 });
+
+  const handleVote = (option) => {
+    setVotes(prevState => ({ ...prevState, [option]: prevState[option] + 1 }));
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button onClick={() => setCount(count => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test hot module replacement (HMR).
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <h1>Vote on the Prompt</h1>
+      <h3>{prompt}</h3>
+      <div>
+        <button onClick={() => handleVote('yes')}>Yes</button>
+        <button onClick={() => handleVote('no')}>No</button>
+        <button onClick={() => handleVote('maybe')}>Maybe</button>
+      </div>
+      <div>
+        <p>Yes: {votes.yes}</p>
+        <p>No: {votes.no}</p>
+        <p>Maybe: {votes.maybe}</p>
+      </div>
     </div>
   );
-};
+}
 
 export default App;
