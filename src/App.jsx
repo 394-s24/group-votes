@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { increment } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAWrjtBrxpT9THsfhg-lwQnqpeF7T3v9Eg",
@@ -26,6 +27,7 @@ function App() {
   const [prompt, setPrompt] = useState('');
   const [prompts, setPrompts] = useState([]);
   const [votes, setVotes] = useState({});
+  const [promptIds, setPromptIds] = useState({});
 
   const handlePromptChange = (event) => {
     setPrompt(event.target.value);
@@ -67,21 +69,22 @@ function App() {
   }, []);
 
    
-const handleVote = async (promptText, option) => {
-  try {
-    const promptDocId = promptIds[promptText]; // Get the document ID from the stored IDs
-    if (!promptDocId) {
-      console.error("No document found for this prompt.");
-      return;
+  const handleVote = async (promptText, option) => {
+    try {
+      const promptDocId = promptIds[promptText];
+      if (!promptDocId) {
+        console.error("No document found for this prompt.");
+        return;
+      }
+      const promptDocRef = doc(promptsCollectionRef, promptDocId);
+      await updateDoc(promptDocRef, {
+        [`votes.${option}`]: increment(1),
+      });
+    } catch (error) {
+      console.error("Error updating votes: ", error);
     }
-    const promptDocRef = doc(promptsCollectionRef, promptDocId);
-    await updateDoc(promptDocRef, {
-      [`votes.${option}`]: (votes[promptText][option] || 0) + 1,
-    });
-  } catch (error) {
-    console.error("Error updating votes: ", error);
-  }
-};
+  };
+  
   
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
