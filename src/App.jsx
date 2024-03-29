@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
-
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAWrjtBrxpT9THsfhg-lwQnqpeF7T3v9Eg",
   authDomain: "group-votes-ce1dd.firebaseapp.com",
@@ -19,9 +15,12 @@ const firebaseConfig = {
   measurementId: "G-H1RNPT1QS4"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const firestore = getFirestore(app);
+
+const promptsCollectionRef = collection(firestore, "prompts");
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -32,24 +31,68 @@ function App() {
     setPrompt(event.target.value);
   };
 
-  const handlePostPrompt = () => {
+  const handlePostPrompt = async () => {
     if (prompt.trim() !== '') {
-      setPrompts(prevPrompts => [...prevPrompts, prompt]);
-      setVotes(prevVotes => ({ ...prevVotes, [prompt]: { yes: 0, no: 0, maybe: 0 } }));
-      setPrompt('');
+      try {
+        await addDoc(promptsCollectionRef, {
+          text: prompt,
+          votes: { yes: 0, no: 0, maybe: 0 },
+        });
+        setPrompt('');
+      } catch (error) {
+        console.error("Error adding prompt: ", error);
+      }
     }
   };
 
-  const handleVote = (promptText, option) => {
-    setVotes(prevVotes => ({
-      ...prevVotes,
-      [promptText]: { ...prevVotes[promptText], [option]: prevVotes[promptText][option] + 1 }
-    }));
+  React.useEffect(() => {
+    const unsubscribe = onSnapshot(promptsCollectionRef, (snapshot) => {
+      const updatedPrompts = [];
+      const updatedVotes = {};
+  
+      snapshot.forEach((doc) => {
+        const { text, votes } = doc.data();
+        updatedPrompts.push(text);
+        updatedVotes[text] = votes;
+      });
+  
+      setPrompts(updatedPrompts);
+      setVotes(updatedVotes);
+    });
+  
+    return unsubscribe;
+  }, []);
+
+  const handleVote = async (promptText, option) => {
+    try {
+      const promptDocRef = doc(promptsCollectionRef, prompts.indexOf(promptText));
+      await updateDoc(promptDocRef, {
+        [`votes.${option}`]: (votes[promptText][option] || 0) + 1,
+      });
+    } catch (error) {
+      console.error("Error updating votes: ", error);
+    }
+  };
+  
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        // Update user state or perform other actions
+      }).catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
     <div className="App">
       <h1>GroupVotes</h1>
+      <div>
+        <button onClick={signInWithGoogle}>Sign in with Google</button>
+      </div>
       <div className="post-prompt">
         <input type="text" placeholder="Enter your prompt" value={prompt} onChange={handlePromptChange} />
         <button onClick={handlePostPrompt}>Post Prompt</button>
