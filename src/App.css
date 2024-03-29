@@ -28,6 +28,14 @@
   color: #61dafb;
 }
 
+.reminders-section {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* additional styles for background, padding, etc. */
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -39,4 +47,14 @@
 
 button {
   font-size: calc(10px + 2vmin);
+}
+
+.feed {
+  /* Add styles here to control the scrolling behavior of the feed */
+  max-height: calc(100vh - 150px); /* Adjust the value 150px based on your header/footer size */
+  overflow-y: auto; /* This will allow the feed to scroll */
+}
+
+.prompt-item {
+  border: 1px solid red; /* This will make the prompt items visible */
 }
