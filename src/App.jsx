@@ -17,7 +17,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+getAnalytics(app);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 
@@ -28,22 +28,23 @@ function App() {
   const [prompts, setPrompts] = useState([]);
   const [votes, setVotes] = useState({});
   const [promptIds, setPromptIds] = useState({});
+  const [reminders, setReminders] = useState([]);
+  const [newReminder, setNewReminder] = useState('');
 
   const handlePromptChange = (event) => {
     setPrompt(event.target.value);
   };
 
-  const handlePostPrompt = async () => {
+  const handlePostPrompt = () => {
     if (prompt.trim() !== '') {
-      try {
-        await addDoc(promptsCollectionRef, {
-          text: prompt,
-          votes: { yes: 0, no: 0, maybe: 0 },
-        });
-        setPrompt('');
-      } catch (error) {
-        console.error("Error adding prompt: ", error);
-      }
+      const newPrompts = [...prompts, prompt];
+      console.log('Before setPrompts:', prompts); // Check the previous state
+      console.log('New prompt to add:', prompt); // Check what you're trying to add
+      setPrompts(newPrompts);
+      console.log('After setPrompts:', newPrompts); // Check the updated state
+      setPrompt('');
+    } else {
+      alert('Please enter a prompt.');
     }
   };
 
@@ -99,6 +100,22 @@ function App() {
       });
   };
 
+  const handleAddReminder = () => {
+    if (newReminder.trim() !== '') {
+      setReminders(prevReminders => [...prevReminders, newReminder]);
+      setNewReminder('');
+    } else {
+      alert('Please enter a reminder.');
+    }
+  };
+
+  const Reminder = ({ text }) => (
+    <div className="reminder">
+      {text}
+      {/* Additional markup for time, icons, etc. */}
+    </div>
+  );
+
   return (
     <div className="App">
       <h1>GroupVotes</h1>
@@ -106,25 +123,42 @@ function App() {
         <button onClick={signInWithGoogle}>Sign in with Google</button>
       </div>
       <div className="post-prompt">
-        <input type="text" placeholder="Enter your prompt" value={prompt} onChange={handlePromptChange} />
+        <input 
+          type="text" 
+          placeholder="Enter your prompt" 
+          value={prompt} 
+          onChange={handlePromptChange} 
+        />
         <button onClick={handlePostPrompt}>Post Prompt</button>
       </div>
-      <div className="prompt-feed">
-        {prompts.map((promptText, index) => (
-          <div key={index} className="prompt-item">
-            <h3>{promptText}</h3>
-            <div>
-              <button onClick={() => handleVote(promptText, 'yes')}>Yes</button>
-              <button onClick={() => handleVote(promptText, 'no')}>No</button>
-              <button onClick={() => handleVote(promptText, 'maybe')}>Maybe</button>
-            </div>
-            <div>
-              <p>Yes: {votes[promptText]?.yes || 0}</p>
-              <p>No: {votes[promptText]?.no || 0}</p>
-              <p>Maybe: {votes[promptText]?.maybe || 0}</p>
-            </div>
-          </div>
+      <div className="feed">
+      {prompts.map((promptText, index) => (
+  <div key={index} className="prompt-item">
+    <h3>{promptText}</h3>
+    <div>
+      <button onClick={() => handleVote(promptText, 'yes')}>Yes</button>
+      <button onClick={() => handleVote(promptText, 'no')}>No</button>
+      <button onClick={() => handleVote(promptText, 'maybe')}>Maybe</button>
+    </div>
+    <div>
+      <p>Yes: {votes[promptText]?.yes || 0}</p>
+      <p>No: {votes[promptText]?.no || 0}</p>
+      <p>Maybe: {votes[promptText]?.maybe || 0}</p>
+    </div>
+  </div>
+))}
+        {reminders.map((reminderText, index) => (
+          <Reminder key={index} text={reminderText} />
         ))}
+        <div className="add-reminder">
+          <input 
+            type="text" 
+            placeholder="Enter your reminder" 
+            value={newReminder} 
+            onChange={e => setNewReminder(e.target.value)}
+          />
+          <button onClick={handleAddReminder}>Add Reminder</button>
+        </div>
       </div>
     </div>
   );
