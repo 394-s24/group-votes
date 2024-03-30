@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { increment } from "firebase/firestore";
 
@@ -30,6 +30,8 @@ function App() {
   const [promptIds, setPromptIds] = useState({});
   const [reminders, setReminders] = useState([]);
   const [newReminder, setNewReminder] = useState('');
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
 
   const handlePromptChange = (event) => {
     setPrompt(event.target.value);
@@ -95,8 +97,19 @@ function App() {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const user = result.user;
-        // Update user state or perform other actions
-      }).catch((error) => {
+        setIsSignedIn(true); // Set the isSignedIn state to true
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        setIsSignedIn(false); // Set the isSignedIn state to false
+      })
+      .catch((error) => {
         console.error(error);
       });
   };
@@ -121,7 +134,11 @@ function App() {
     <div className="App">
       <h1>GroupVotes</h1>
       <div>
-        <button onClick={signInWithGoogle}>Sign in with Google</button>
+        {isSignedIn ? (
+          <button onClick={handleSignOut}>Sign Out</button>
+        ) : (
+          <button onClick={signInWithGoogle}>Sign in with Google</button>
+        )}
       </div>
       <div className="post-prompt">
         <input 
