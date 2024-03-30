@@ -45,14 +45,49 @@
   }
 }
 
+/* Button styles */
 button {
-  font-size: calc(10px + 2vmin);
+  padding: 0.5em 1em;
+  margin: 0.5em;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+button:hover {
+  opacity: 0.9;
+}
+
+/* Specific styles for each type of button */
+.yes-button {
+  background-color: #4CAF50; /* Green */
+}
+
+.no-button {
+  background-color: #f44336; /* Red */
+}
+
+.maybe-button {
+  background-color: #ffeb3b; /* Yellow */
+}
+
+/* Prompt item styles */
+.prompt-item {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+/* Feed container styles */
 .feed {
-  /* Add styles here to control the scrolling behavior of the feed */
-  max-height: calc(100vh - 150px); /* Adjust the value 150px based on your header/footer size */
-  overflow-y: auto; /* This will allow the feed to scroll */
+  max-width: 600px;
+  margin: auto;
+  padding: 1em;
 }
 
 .prompt-item {

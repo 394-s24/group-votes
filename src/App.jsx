@@ -119,46 +119,48 @@ function App() {
 
   return (
     <div className="App">
-      <h1>GroupVotes</h1>
-      <div>
-        <button onClick={signInWithGoogle}>Sign in with Google</button>
+      <h1 className="title">GroupVotes</h1>
+      <div className="sign-in">
+        <button className="sign-in-button" onClick={signInWithGoogle}>Sign in with Google</button>
       </div>
       <div className="post-prompt">
         <input 
+          className="prompt-input"
           type="text" 
           placeholder="Enter your prompt" 
           value={prompt} 
           onChange={handlePromptChange} 
         />
-        <button onClick={handlePostPrompt}>Post Prompt</button>
+        <button className="post-prompt-button" onClick={handlePostPrompt}>Post Prompt</button>
       </div>
       <div className="feed">
-      {prompts.map((promptText, index) => (
-  <div key={index} className="prompt-item">
-    <h3>{promptText}</h3>
-    <div>
-      <button onClick={() => handleVote(promptText, 'yes')}>Yes</button>
-      <button onClick={() => handleVote(promptText, 'no')}>No</button>
-      <button onClick={() => handleVote(promptText, 'maybe')}>Maybe</button>
-    </div>
-    <div>
-      <p>Yes: {votes[promptText]?.yes || 0}</p>
-      <p>No: {votes[promptText]?.no || 0}</p>
-      <p>Maybe: {votes[promptText]?.maybe || 0}</p>
-    </div>
-  </div>
-))}
+        {prompts.map((promptText, index) => (
+          <div key={index} className="prompt-item">
+            <h3 className="prompt-title">{promptText}</h3>
+            <div className="vote-buttons">
+              <button className="yes-button" onClick={() => handleVote(promptText, 'yes')}>Yes</button>
+              <button className="no-button" onClick={() => handleVote(promptText, 'no')}>No</button>
+              <button className="maybe-button" onClick={() => handleVote(promptText, 'maybe')}>Maybe</button>
+            </div>
+            <div className="vote-counts">
+              <p className="vote-count yes-count">Yes: {votes[promptText]?.yes || 0}</p>
+              <p className="vote-count no-count">No: {votes[promptText]?.no || 0}</p>
+              <p className="vote-count maybe-count">Maybe: {votes[promptText]?.maybe || 0}</p>
+            </div>
+          </div>
+        ))}
         {reminders.map((reminderText, index) => (
           <Reminder key={index} text={reminderText} />
         ))}
         <div className="add-reminder">
           <input 
+            className="reminder-input"
             type="text" 
             placeholder="Enter your reminder" 
             value={newReminder} 
             onChange={e => setNewReminder(e.target.value)}
           />
-          <button onClick={handleAddReminder}>Add Reminder</button>
+          <button className="add-reminder-button" onClick={handleAddReminder}>Add Reminder</button>
         </div>
       </div>
     </div>
