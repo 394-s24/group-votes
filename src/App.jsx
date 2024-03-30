@@ -141,7 +141,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="title">GroupVotes</h1>
+      <h1 className="title font-mono uppercase text-lg text-center">
+        GroupVotes
+      </h1>
       <div className="sign-in">
         {isSignedIn ? (
           <button className="sign-in-button" onClick={handleSignOut}>
@@ -153,16 +155,16 @@ function App() {
           </button>
         )}
       </div>
-      <div className="post-prompt py-2 px-4">
+      <div className="post-prompt items-center justify-between space-x-2">
         <input
-          className="prompt-input"
+          className="prompt-input h-20"
           type="text"
           placeholder="Enter your prompt"
           value={prompt}
           onChange={handlePromptChange}
         />
         <button
-          className="post-prompt-button bg-blue-500 hover:bg-blue-700 text-white "
+          className="post-prompt-button h-20 bg-blue-500 hover:bg-blue-700 text-white "
           onClick={handlePostPrompt}
         >
           Post Prompt
@@ -170,8 +172,11 @@ function App() {
       </div>
       <div className="feed">
         {prompts.map((promptText, index) => (
-          <div key={index} className="border-gray-300">
-            <h3 className="prompt-title">{promptText}</h3>
+          <div
+            key={index}
+            className="bg-stone-100 border-gray-300 hover:bg-stone-300 py-2 px-4 rounded "
+          >
+            <h3 className="font-mono text-lg">{promptText}</h3>
             <div className="vote-buttons">
               <button
                 className="yes-button"
