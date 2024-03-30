@@ -89,7 +89,6 @@ function App() {
     }
   };
   
-  
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
