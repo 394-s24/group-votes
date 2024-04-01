@@ -1,0 +1,33 @@
+.feed {
+    position: relative;
+    padding-top: 2px; /* Space for the top border */
+}
+
+.feed:before, .feed:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: gray;
+}
+
+.feed:before {
+    top: 0;
+}
+
+.feed:after {
+    bottom: 0;
+}
+
+.post {
+    border-top: 2px solid gray;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.post:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none; /* Remove top border for the first post */
+}
