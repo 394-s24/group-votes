@@ -16,7 +16,7 @@ const Feed = ({ groupId }) => {
 
     // Unsubscribe on component unmount
     return () => unsubscribe();
-  }, [groupId, fetchPostsForGroup]);
+  }, [groupId]);
 
   return (
     <div className="feed">
