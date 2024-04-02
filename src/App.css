@@ -1,6 +1,7 @@
-@tailwind base;
+/* Uncomment this block to use Tailwind CSS for App component */
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */ 
 
 .App {
   text-align: center;

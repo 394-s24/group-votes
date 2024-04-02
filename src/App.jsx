@@ -19,7 +19,7 @@ const App = () => {
   const date = today.toLocaleDateString([], { dateStyle: "long" });
 
   return (
-    <div className="container bg-stone-100">
+    <div className="container">
       <h1>GroupVotes</h1>
 
       <p>
