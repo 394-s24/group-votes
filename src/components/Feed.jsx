@@ -7,7 +7,7 @@ const Feed = ({ groupId }) => {
   const [posts, setPosts] = useState([]);
   const { fetchPostsForGroup } = useFirebase();
 
-  // Load in posts (TOO MANY READS!)
+  // Load in posts
   useEffect(() => {
     if (!groupId) return;
     
