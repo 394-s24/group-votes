@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .feed {
     position: relative;
     padding-top: 2px; /* Space for the top border */

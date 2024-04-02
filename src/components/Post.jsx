@@ -20,11 +20,16 @@ const Post = ({ post }) => {
             {post.description && <p>{post.description}</p>}
             {post.link && <a href={post.link} target="_blank" rel="noopener noreferrer">More Info</a>}
             {/* Yes, Maybe, No buttons */}
-            <div>
-              <button className="btn btn-success mr-2" onClick={() => handleOptionClick('yes')}>Yes</button>
-              <button className="btn btn-secondary mr-2" onClick={() => handleOptionClick('maybe')}>Maybe</button>
-              <button className="btn btn-danger" onClick={() => handleOptionClick('no')}>No</button>
-            </div>
+            <div class="flex items-center justify-center">
+  <button class="bg-green-500 text-white p-2 rounded-lg mr-2">Yes</button>
+  <button class="bg-yellow-500 text-white p-2 rounded-lg mr-2">Maybe</button>
+  <button class="bg-red-500 text-white p-2 rounded-lg">No</button>
+</div>
+<div class="flex items-center justify-center mt-4">
+  <p class="text-green-500 mr-2">10 Yes</p>
+  <p class="text-yellow-500 mr-2">5 Maybe</p>
+  <p class="text-red-500">3 No</p>
+</div>
           </>
         );
       case 'Vote':
