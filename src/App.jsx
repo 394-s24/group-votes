@@ -30,7 +30,10 @@ const App = () => {
       
       <div style={{ height: '10px' }}></div>
       
-      <PostButton />
+      <div style={{ position: 'fixed', bottom: '30px', right: '30px' }}>
+        <PostButton />
+      </div>
+      
     </div>
   );
 };
