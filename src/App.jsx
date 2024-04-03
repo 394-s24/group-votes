@@ -27,7 +27,9 @@ const App = () => {
       </p>
 
       <Feed groupId="testGroupID" />
-
+      
+      <div style={{ height: '10px' }}></div>
+      
       <PostButton />
     </div>
   );

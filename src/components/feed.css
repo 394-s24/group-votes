@@ -4,7 +4,8 @@
 
 .feed {
     position: relative;
-    padding-top: 2px; /* Space for the top border */
+    padding-top: 10px; /* Space for the top border */
+    padding-bottom: 10px;
 }
 
 .feed:before, .feed:after {
