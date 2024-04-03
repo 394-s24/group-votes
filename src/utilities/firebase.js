@@ -55,7 +55,7 @@ const useFirebase = () => {
             querySnapshot.forEach((doc) => {
                 posts.push({ id: doc.id, ...doc.data() });
             });
-            setPosts(posts.reverse());
+            setPosts(posts);
         });
 
         return unsubscribe; // Return the unsubscribe function to call it on component unmount
