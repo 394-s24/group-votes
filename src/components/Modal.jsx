@@ -12,7 +12,7 @@ const Modal = ({ children, open, close }) => (
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-header">
-          <button type="button" className="btn-close" aria-label="Close"
+          <button type="button" className="btn-close" aria-label="Close" style={{ position: 'relative', top: '10px', left: '-10px' }}
             onClick={close}
           />
         </div>

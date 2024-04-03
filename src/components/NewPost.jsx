@@ -53,7 +53,7 @@ const NewPost = ({ groupId, userID }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="container mt-5">
+    <form onSubmit={handleSubmit} className="container">
       <div className="mb-3">
         <label htmlFor="postType" className="form-label">Post Type:</label>
         <select id="postType" className="form-select" value={postType} name="postType" onChange={handleInputChange}>
