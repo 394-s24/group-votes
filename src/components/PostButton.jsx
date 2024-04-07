@@ -22,14 +22,14 @@ const PostButton = () => {
         closeModal();
       }
     };
-
+    const body = document.body;
     if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
+      body.classList.add("blur-background");
       document.addEventListener("keydown", handleEscapePress);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      body.classList.remove("blur-background");
       document.removeEventListener("keydown", handleEscapePress);
     };
   }, [open]);

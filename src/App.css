@@ -1,7 +1,7 @@
 /* Uncomment this block to use Tailwind CSS for App component */
 /* @tailwind base;
 @tailwind components;
-@tailwind utilities; */ 
+@tailwind utilities; */
 
 .App {
   text-align: center;
@@ -41,6 +41,15 @@
     transform: rotate(360deg);
   }
 }
+
+/* .blur-background > :not(.container-test) {
+  filter: blur(5px);
+}
+
+.container-test {
+  z-index: 1050; 
+  position: relative; 
+} */
 
 button {
   font-size: calc(10px + 2vmin);
