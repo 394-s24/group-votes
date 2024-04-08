@@ -33,6 +33,8 @@ const PostButton = () => {
       document.removeEventListener("keydown", handleEscapePress);
     };
   }, [open]);
+
+
   return (
     <div>
       {/* Button to trigger modal for new post creation */}
@@ -44,7 +46,7 @@ const PostButton = () => {
 
       {/* Modal dialog for NewPost component */}
       <Modal open={open} close={closeModal}>
-        <NewPost groupId="testGroupID" userID="testUserID" />
+        <NewPost groupId="testGroupID" userID="testUserID" closeModal={closeModal} />
       </Modal>
     </div>
   );

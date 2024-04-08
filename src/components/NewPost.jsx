@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useFirebase from "../utilities/firebase";
 
-const NewPost = ({ groupId, userID }) => {
+const NewPost = ({ groupId, userID, closeModal }) => {
   const { addPostToGroup } = useFirebase();
   const [postType, setPostType] = useState("Event");
   const [formData, setFormData] = useState({
@@ -212,7 +212,7 @@ const NewPost = ({ groupId, userID }) => {
           </>
         )}
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" onClick={closeModal}>
           Send to Group
         </button>
       </form>

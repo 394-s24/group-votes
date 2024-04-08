@@ -104,7 +104,12 @@ const Post = ({ post }) => {
         return (
           <>
             {post.options.map((option, index) => (
-              <p key={index}>{option}</p>
+              <button 
+                key={index} 
+                class="flex flex-col my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+              >
+                {option}
+              </button>
             ))}
           </>
         );
