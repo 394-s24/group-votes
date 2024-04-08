@@ -2,7 +2,7 @@
 
 // SDKs import
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, addDoc, getDocs, query, onSnapshot, orderBy, limit, updateDoc, increment } from "firebase/firestore";
+import { getFirestore, collection, doc, addDoc, getDoc, getDocs, query, onSnapshot, orderBy, limit, updateDoc, increment } from "firebase/firestore";
 
 // Firebase configuration
 /* const firebaseConfig = {
@@ -71,12 +71,45 @@ const useFirebase = () => {
             console.error("Error updating votes: ", err.message);
         }
       };
+
+    // Function to update votes for a poll option
+    const updatePollVote = async (groupId, postId, optionIndex) => {
+      const postRef = doc(db, `groups/${groupId}/posts`, postId);
+    
+      try {
+        const postDoc = await getDoc(postRef);
+        if (!postDoc.exists()) {
+          throw new Error("Document does not exist!");
+        }
+    
+        const postData = postDoc.data();
+        const options = postData.options;
+    
+        // Ensure options is an array and optionIndex is within bounds
+        if (Array.isArray(options) && optionIndex < options.length) {
+          // Manually increment the votes
+          const newVotes = (options[optionIndex].votes || 0) + 1;
+          options[optionIndex].votes = newVotes;
+    
+          // Set the updated options array back to the document
+          await updateDoc(postRef, { options });
+        } else {
+          throw new Error(`Option at index ${optionIndex} does not exist.`);
+        }
+    
+        console.log("Votes successfully updated!");
+      } catch (e) {
+        console.error("Failed to update votes: ", e);
+      }
+    };
+
   
     // Return the necessary functions and state
     return {
       addPostToGroup,
       fetchPostsForGroup,
       updatePostOptions,
+      updatePollVote, 
     };
   };
   

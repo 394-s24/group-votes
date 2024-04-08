@@ -13,7 +13,7 @@ const NewPost = ({ groupId, userID, closeModal }) => {
     eventLocation: "",
     description: "",
     question: "",
-    options: ["", ""], // add question to option
+    options: [{ text: '', votes: 0 }], // add question to option
     text: "",
     link: "",
   });
@@ -33,13 +33,13 @@ const NewPost = ({ groupId, userID, closeModal }) => {
   const addPollOption = () => {
     setFormData({
       ...formData,
-      options: [...formData.options, ""],
+      options: [...formData.options, { text: '', votes: 0 }],
     });
   };
 
   const handlePollOptionChange = (index, value) => {
     const updatedOptions = formData.options.map((option, i) =>
-      i === index ? value : option
+      i === index ? { ...option, text: value } : option
     );
     setFormData({
       ...formData,
@@ -49,6 +49,7 @@ const NewPost = ({ groupId, userID, closeModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     addPostToGroup(groupId, formData);
   };
 
@@ -168,10 +169,8 @@ const NewPost = ({ groupId, userID, closeModal }) => {
               <div className="mb-3" key={index}>
                 <input
                   className="form-control"
-                  value={option}
-                  onChange={(e) =>
-                    handlePollOptionChange(index, e.target.value)
-                  }
+                  value={option.text}
+                  onChange={(e) => handlePollOptionChange(index, e.target.value)}
                   placeholder={`Option ${index + 1}`}
                 />
               </div>
