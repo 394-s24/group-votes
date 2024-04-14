@@ -14,6 +14,15 @@ const Post = ({ post }) => {
     await updatePollVote("testGroupID", post.id, optionIndex); // Call the updatePollVote function for "Poll" type
   };
 
+  const renderButton = (option) => (
+    <button
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+      // disabled={selectedOption === option}
+      onClick={() => handleOptionClick(option)}
+    >
+      {option.charAt(0).toUpperCase() + option.slice(1)}
+    </button>
+  );
   const renderPostContent = () => {
     switch (post.postType) {
       case "Event":
@@ -44,12 +53,7 @@ const Post = ({ post }) => {
                 <p>{post.yes} Yes</p>
               </div>
               <div class="text-center">
-                <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
-                  onClick={() => handleOptionClick("maybe")}
-                >
-                  Maybe
-                </button>
+                 {renderButton("maybe")} 
                 <p>{post.maybe} Maybe</p>
               </div>
               <div class="text-center">
