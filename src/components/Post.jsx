@@ -121,14 +121,13 @@ const Post = ({ post }) => {
               {post.options.map((option, index) => (
                 <div key={index} className="flex items-center my-2 w-full">
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded focus:outline-none focus:shadow-outline"
                     onClick={() => handlePollOptionClick(index)}
-                    style={{ width: `${maxButtonWidth}px`, marginRight: '10px' }}
                   >
                     {option.text}
                   </button>
-                  <span className="text-gray-700">{option.votes} Votes</span>
-                  <div className="bg-gray-200 w-full ml-4">
+                  <span className="pl-3 text-gray-700">{option.votes} Votes</span>
+                  <div className="bg-gray-200 w-full">
                     <div
                       className="bg-blue-500 h-4"
                       style={{ width: `${(option.votes / totalVotes) * 100}%` }}
