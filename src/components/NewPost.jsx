@@ -54,7 +54,7 @@ const NewPost = ({ groupId, userID, closeModal }) => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-slate-50 rounded-lg">
+    <div className="flex items-center justify-center bg-sky-900 border-2 border-cyan-100 text-cyan-100 font-bold py-2 px-3 text-base rounded" > 
       <form
         onSubmit={handleSubmit}
         className=" container w-full max-w-4xl mx-4 md:mx-8 p-6"
@@ -165,6 +165,16 @@ const NewPost = ({ groupId, userID, closeModal }) => {
 
         {postType === "Poll" && (
           <>
+            <div className="mb-3">
+              <input
+                className="form-control"
+                name="question"
+                placeholder="Question"
+                value={formData.question}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
             {formData.options.map((option, index) => (
               <div className="mb-3" key={index}>
                 <input
@@ -186,6 +196,7 @@ const NewPost = ({ groupId, userID, closeModal }) => {
             </div>
           </>
         )}
+
 
         {postType === "Reminder" && (
           <>
@@ -211,9 +222,10 @@ const NewPost = ({ groupId, userID, closeModal }) => {
           </>
         )}
 
-        <button type="submit" className="btn btn-primary" onClick={closeModal}>
+        <button type="submit" className="bg-sky-900 border-2 border-cyan-100 hover:border-cyan-100 hover:bg-cyan-100 text-cyan-100 hover:text-sky-900 font-bold py-2 px-3 text-base rounded" onClick={closeModal}>
           Send to Group
         </button>
+
       </form>
     </div>
   );

@@ -16,7 +16,7 @@ const Post = ({ post }) => {
 
   const renderButton = (option) => (
     <button
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+      className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
       // disabled={selectedOption === option}
       onClick={() => handleOptionClick(option)}
     >
@@ -45,7 +45,7 @@ const Post = ({ post }) => {
             <div class="flex justify-end space-x-4  ">
               <div class="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
                 >
                   Yes
@@ -58,7 +58,7 @@ const Post = ({ post }) => {
               </div>
               <div class="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
                 >
                   No
@@ -81,7 +81,7 @@ const Post = ({ post }) => {
             <div class="flex justify-end space-x-4">
               <div class="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
                 >
                   Yes
@@ -90,7 +90,7 @@ const Post = ({ post }) => {
               </div>
               <div class="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("maybe")}
                 >
                   Maybe
@@ -99,7 +99,7 @@ const Post = ({ post }) => {
               </div>
               <div class="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
                 >
                   No
@@ -113,10 +113,10 @@ const Post = ({ post }) => {
         const totalVotes = post.options.reduce((acc, option) => acc + option.votes, 0);
         
         //maximum width required for the buttons
-        const maxButtonWidth = post.options.reduce((max, option) => {
-          const optionTextWidth = option.text.length * 15; 
-          return Math.max(max, optionTextWidth);
+        const longestOptionLength = post.options.reduce((max, option) => {
+          return Math.max(max, option.text.length);
         }, 0);
+        
 
         return (
           <>
@@ -125,15 +125,16 @@ const Post = ({ post }) => {
               {post.options.map((option, index) => (
                 <div key={index} className="flex items-center my-2 w-full">
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded focus:outline-none focus:shadow-outline"
+                    className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
+                    style={{ width: `${longestOptionLength * 20}px` }} // Set width to the width of the longest option
                     onClick={() => handlePollOptionClick(index)}
                   >
                     {option.text}
                   </button>
                   <span className="pl-3 text-gray-700">{option.votes} Votes</span>
-                  <div className="bg-gray-200 w-full">
+                  <div className="bg-cyan-100 border-2 border-sky-900 w-full">
                     <div
-                      className="bg-blue-500 h-4"
+                      className="bg-sky-900 h-4"
                       style={{ width: `${(option.votes / totalVotes) * 100}%` }}
                     ></div>
                   </div>
@@ -142,6 +143,7 @@ const Post = ({ post }) => {
             </div>
           </>
         );
+        
       case "Reminder":
         return (
           <>

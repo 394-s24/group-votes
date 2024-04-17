@@ -54,3 +54,23 @@
 button {
   font-size: calc(10px + 2vmin);
 }
+
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: left; 
+  margin-top: 20px; /* Add margin to separate from other content */
+  margin-bottom: 20px; /* Add margin to separate from other content */
+}
+
+.logo-icon {
+  width: 150px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 0px; /* Adjust spacing between logos */
+}
+
+.logo-text {
+  width: 450px; /* Adjust the size as needed */
+  height: auto; /* Maintain aspect ratio */
+}

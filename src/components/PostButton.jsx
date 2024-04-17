@@ -39,7 +39,7 @@ const PostButton = () => {
     <div>
       {/* Button to trigger modal for new post creation */}
       {!open && (
-        <button className="btn btn-primary" onClick={openModal}>
+        <button className="bg-sky-900 border-2 border-cyan-100 hover:border-sky-900 hover:bg-cyan-100 text-cyan-100 hover:text-sky-900 font-bold py-2 px-3 text-base rounded" onClick={openModal}>
           + Post
         </button>
       )}
