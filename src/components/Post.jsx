@@ -42,23 +42,23 @@ const Post = ({ post }) => {
               </a>
             )}
             {/* Yes, Maybe, No buttons */}
-            <div class="flex justify-end space-x-4  ">
-              <div class="text-center">
+            <div className="flex justify-end space-x-4  ">
+              <div className="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
                 >
                   Yes
                 </button>
                 <p>{post.yes} Yes</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                  {renderButton("maybe")} 
                 <p>{post.maybe} Maybe</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
                 >
                   No
@@ -78,28 +78,28 @@ const Post = ({ post }) => {
               </a>
             )}
             {/* Yes, Maybe, No buttons */}
-            <div class="flex justify-end space-x-4">
-              <div class="text-center">
+            <div className="flex justify-end space-x-4">
+              <div className="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
                 >
                   Yes
                 </button>
                 <p>{post.yes} Yes</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("maybe")}
                 >
                   Maybe
                 </button>
                 <p>{post.maybe} Maybe</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
                 >
                   No
