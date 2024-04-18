@@ -2,7 +2,20 @@
 
 // SDKs import
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, addDoc, getDoc, getDocs, query, onSnapshot, orderBy, limit, updateDoc, increment } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  getDoc,
+  getDocs,
+  query,
+  onSnapshot,
+  orderBy,
+  limit,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 
 // Firebase configuration
 /* const firebaseConfig = {
@@ -16,101 +29,172 @@ import { getFirestore, collection, doc, addDoc, getDoc, getDocs, query, onSnapsh
 
 //TESTING CONFIG
 const firebaseConfig = {
-    apiKey: "AIzaSyAWrjtBrxpT9THsfhg-lwQnqpeF7T3v9Eg",
-    authDomain: "group-votes-ce1dd.firebaseapp.com",
-    projectId: "group-votes-ce1dd",
-    storageBucket: "group-votes-ce1dd.appspot.com",
-    messagingSenderId: "275690848987",
-    appId: "1:275690848987:web:2859ab03aedb8887fe02fe",
-    measurementId: "G-H1RNPT1QS4"
-  };
+  apiKey: "AIzaSyAWrjtBrxpT9THsfhg-lwQnqpeF7T3v9Eg",
+  authDomain: "group-votes-ce1dd.firebaseapp.com",
+  projectId: "group-votes-ce1dd",
+  storageBucket: "group-votes-ce1dd.appspot.com",
+  messagingSenderId: "275690848987",
+  appId: "1:275690848987:web:2859ab03aedb8887fe02fe",
+  measurementId: "G-H1RNPT1QS4",
+};
 
 // Initialize Firebasenpm install firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const useFirebase = () => {
-  
-    // Function to add post to group
-    const addPostToGroup = async (groupId, formData) => {
-      try {
-        if (!db) {
-          console.error('Firebase is not initialized.');
-          return;
-        }
-        const groups = collection(db, "groups");
-        const docRef = await addDoc(collection(groups, groupId, "posts"), formData);
-        console.log("Document written");
-        } catch (e) {
-          console.error("Error adding document: ", e);
+  // Function to add post to group
+  const addPostToGroup = async (groupId, formData) => {
+    try {
+      if (!db) {
+        console.error("Firebase is not initialized.");
+        return;
       }
-    };
-
-    // Function to fetch posts
-    const fetchPostsForGroup = (groupId, setPosts) => {
-        const q = query(collection(db, 'groups', groupId, 'posts'), limit(10)); // Can remove limit later and add orderBy('DatePosted')
-
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const posts = [];
-            querySnapshot.forEach((doc) => {
-                posts.push({ id: doc.id, ...doc.data() });
-            });
-            setPosts(posts);
-        });
-
-        return unsubscribe; // Return the unsubscribe function to call it on component unmount
-    };
-
-    // Function to update posts with votes
-    const updatePostOptions = async (groupId, postId, option) => {
-        try {
-          await updateDoc(doc(db, `groups/${groupId}/posts`, postId), {
-            [option]: increment(1)
-          });
-        } catch (err) {
-            console.error("Error updating votes: ", err.message);
-        }
-      };
-
-    // Function to update votes for a poll option
-    const updatePollVote = async (groupId, postId, optionIndex) => {
-      const postRef = doc(db, `groups/${groupId}/posts`, postId);
-    
-      try {
-        const postDoc = await getDoc(postRef);
-        if (!postDoc.exists()) {
-          throw new Error("Document does not exist!");
-        }
-    
-        const postData = postDoc.data();
-        const options = postData.options;
-    
-        // Ensure options is an array and optionIndex is within bounds
-        if (Array.isArray(options) && optionIndex < options.length) {
-          // Manually increment the votes
-          const newVotes = (options[optionIndex].votes || 0) + 1;
-          options[optionIndex].votes = newVotes;
-    
-          // Set the updated options array back to the document
-          await updateDoc(postRef, { options });
-        } else {
-          throw new Error(`Option at index ${optionIndex} does not exist.`);
-        }
-    
-        console.log("Votes successfully updated!");
-      } catch (e) {
-        console.error("Failed to update votes: ", e);
-      }
-    };
-
-  
-    // Return the necessary functions and state
-    return {
-      addPostToGroup,
-      fetchPostsForGroup,
-      updatePostOptions,
-      updatePollVote, 
-    };
+      const groups = collection(db, "groups");
+      const docRef = await addDoc(
+        collection(groups, groupId, "posts"),
+        formData
+      );
+      console.log("Document written");
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   };
-  
-  export default useFirebase;
+
+  // Function to fetch posts
+  const fetchPostsForGroup = (groupId, setPosts) => {
+    const q = query(collection(db, "groups", groupId, "posts"), limit(10)); // Can remove limit later and add orderBy('DatePosted')
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        posts.push({ id: doc.id, ...doc.data() });
+      });
+      setPosts(posts);
+    });
+
+    return unsubscribe; // Return the unsubscribe function to call it on component unmount
+  };
+
+  // Function to update posts with votes
+  const updatePostOptions = async (groupId, postId, option) => {
+    try {
+      await updateDoc(doc(db, `groups/${groupId}/posts`, postId), {
+        [option]: increment(1),
+      });
+    } catch (err) {
+      console.error("Error updating votes: ", err.message);
+    }
+  };
+
+  // Function to update votes for a poll option
+  const updatePollVote = async (groupId, postId, optionIndex) => {
+    const postRef = doc(db, `groups/${groupId}/posts`, postId);
+
+    try {
+      const postDoc = await getDoc(postRef);
+      if (!postDoc.exists()) {
+        throw new Error("Document does not exist!");
+      }
+
+      const postData = postDoc.data();
+      const options = postData.options;
+
+      // Ensure options is an array and optionIndex is within bounds
+      if (Array.isArray(options) && optionIndex < options.length) {
+        // Manually increment the votes
+        const newVotes = (options[optionIndex].votes || 0) + 1;
+        options[optionIndex].votes = newVotes;
+
+        // Set the updated options array back to the document
+        await updateDoc(postRef, { options });
+      } else {
+        throw new Error(`Option at index ${optionIndex} does not exist.`);
+      }
+
+      console.log("Votes successfully updated!");
+    } catch (e) {
+      console.error("Failed to update votes: ", e);
+    }
+  };
+
+  // Function to create a new user
+  /* const registerUser = async (email, password) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("User registered with UID:", userCredential.user.uid);
+      return userCredential;
+    } catch (error) {
+      console.error("Error registering new user:", error);
+      throw error;
+    }
+  }; */
+
+  // Function to sign in a user
+  const loginUser = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("User logged in with UID:", userCredential.user.uid);
+      return userCredential;
+    } catch (error) {
+      console.error("Error logging in user:", error);
+      throw error;
+    }
+  };
+
+  // Function to log out a user
+  const logoutUser = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      throw error;
+    }
+  };
+
+  // Function to store user profiles
+  const registerUser = async (email, password, additionalData) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("User registered with UID:", userCredential.user.uid);
+
+      // Optionally store user data in Firestore
+      const userProfile = {
+        email,
+        ...additionalData,
+      };
+      await setDoc(doc(db, "users", userCredential.user.uid), userProfile);
+
+      return userCredential;
+    } catch (error) {
+      console.error("Error registering new user:", error);
+      throw error;
+    }
+  };
+
+  // Return the necessary functions and state
+  return {
+    addPostToGroup,
+    fetchPostsForGroup,
+    updatePostOptions,
+    updatePollVote,
+    loginUser,
+    logoutUser,
+    registerUser
+  };
+};
+
+export default useFirebase;
