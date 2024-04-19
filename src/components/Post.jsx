@@ -120,7 +120,7 @@ const Post = ({ post }) => {
 
         return (
           <>
-            <h5>{post.question}</h5>
+          <h5>{post.question}</h5>
             <div className="flex flex-col items-start">
               {post.options.map((option, index) => {
                 const votePercentage = (option.votes / totalVotes) * 100;
@@ -136,11 +136,11 @@ const Post = ({ post }) => {
                       </span>
                       <span
                         className="absolute top-0 left-0 h-full"
-                        style={{ width: `${votePercentage}%`, background: 'rgba(51,130,250,255)', zIndex: 1 }}
+                        style={{ width: `${votePercentage}%`, background: 'rgba(51,130,250,255)', zIndex: -1}}
                       ></span>
                       <span
                         className="absolute top-0 left-0 h-full w-full flex items-center justify-end pr-3"
-                        style={{ zIndex: 3, color: 'black' }}
+                        style={{ zIndex: 0, color: 'black' }}
                       >
                         {votePercentage.toFixed(0)}%
                       </span>
@@ -150,7 +150,9 @@ const Post = ({ post }) => {
               })}
             </div>
           </>
-        );        
+        );   
+
+  
         
       case "Reminder":
         return (

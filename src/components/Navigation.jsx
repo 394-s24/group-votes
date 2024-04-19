@@ -23,7 +23,7 @@ const Navigation = () => (
   <nav className="d-flex">
     <NavLink to="/" className={activation} end>Feed</NavLink>
     <NavLink to="/group" className={activation} end>Group</NavLink>
-    <NavLink to="/calandar" className={activation} end>Calandar</NavLink>
+    <NavLink to="/calendar" className={activation} end>Calendar</NavLink>
     <AuthButton />
   </nav>
 );
