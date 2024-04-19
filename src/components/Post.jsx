@@ -1,6 +1,8 @@
 import React from "react";
 import "./feed.css";
 import useFirebase from "../utilities/firebase";
+import { serverTimestamp } from 'firebase/firestore';
+import { formatDistanceToNow } from 'date-fns';
 
 const Post = ({ post }) => {
   const { updatePostOptions } = useFirebase(); // Use the useFirebase hook
@@ -13,6 +15,10 @@ const Post = ({ post }) => {
   const handlePollOptionClick = async (optionIndex) => {
     await updatePollVote("testGroupID", post.id, optionIndex); // Call the updatePollVote function for "Poll" type
   };
+
+    // Calculate time ago using the 'createdAt' timestamp from the post
+    const timeAgo = formatDistanceToNow(new Date(post.time.seconds * 1000), { addSuffix: true });
+
 
   const renderButton = (option) => (
     <button
@@ -123,11 +129,12 @@ const Post = ({ post }) => {
           <h5>{post.question}</h5>
             <div className="flex flex-col items-start">
               {post.options.map((option, index) => {
-                const votePercentage = (option.votes / totalVotes) * 100;
+                const votePercentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
+                // const votePercentage = (option.votes / totalVotes) * 100;
                 return (
                   <div key={index} className="w-full my-2">
                     <button
-                      className="relative text-left w-full text-white font-bold py-2 px-3 text-base rounded focus:outline-none focus:shadow-outline overflow-hidden"
+                      className="relative text-left w-full text-black font-bold py-2 px-3 text-base rounded focus:outline-none focus:shadow-outline overflow-hidden"
                       style={{ border: '1px solid #000' }}
                       onClick={() => handlePollOptionClick(index)}
                     >
@@ -136,7 +143,7 @@ const Post = ({ post }) => {
                       </span>
                       <span
                         className="absolute top-0 left-0 h-full"
-                        style={{ width: `${votePercentage}%`, background: 'rgba(51,130,250,255)', zIndex: -1}}
+                        style={{ width: `${votePercentage}%`, background: 'rgba(207,250,254,1)', zIndex: -1}}
                       ></span>
                       <span
                         className="absolute top-0 left-0 h-full w-full flex items-center justify-end pr-3"
@@ -170,12 +177,15 @@ const Post = ({ post }) => {
     }
   };
 
-  return (
-    <div className="post">
-      <small>"{post.author}" 1hr</small>
-      {renderPostContent()}
-    </div>
-  );
+ 
+
+    return (
+      <div className="post">
+        <small>"{post.author}" {timeAgo}</small>
+        {renderPostContent()}
+      </div>
+    );
+
 };
 
 export default Post;
