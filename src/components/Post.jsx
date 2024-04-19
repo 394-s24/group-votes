@@ -1,12 +1,12 @@
 import React from "react";
 import "./feed.css";
 import useFirebase from "../utilities/firebase";
-import { serverTimestamp } from 'firebase/firestore';
-import { formatDistanceToNow } from 'date-fns';
+import { serverTimestamp } from "firebase/firestore";
+import { formatDistanceToNow } from "date-fns";
 
 const Post = ({ post }) => {
   const { updatePostOptions } = useFirebase(); // Use the useFirebase hook
-  const { updatePollVote } = useFirebase(); 
+  const { updatePollVote } = useFirebase();
 
   const handleOptionClick = async (option) => {
     await updatePostOptions("testGroupID", post.id, option); // Call the updatePostOptions function
@@ -16,9 +16,16 @@ const Post = ({ post }) => {
     await updatePollVote("testGroupID", post.id, optionIndex); // Call the updatePollVote function for "Poll" type
   };
 
-    // Calculate time ago using the 'createdAt' timestamp from the post
-    const timeAgo = formatDistanceToNow(new Date(post.time.seconds * 1000), { addSuffix: true });
+  // Calculate time ago using the 'createdAt' timestamp from the post
+  let timeAgo;
 
+  if (post.time && post.time.seconds != null) {
+    const postTime = new Date(post.time.seconds * 1000);
+    timeAgo = formatDistanceToNow(postTime, { addSuffix: true });
+  } else {
+    // Handle the case where post.time.seconds is null
+    timeAgo = "";
+  }
 
   const renderButton = (option) => (
     <button
@@ -51,7 +58,7 @@ const Post = ({ post }) => {
             <div className="flex justify-end space-x-4  ">
               <div className="text-center">
                 <button
-                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
+                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
                 >
                   Yes
@@ -59,12 +66,12 @@ const Post = ({ post }) => {
                 <p>{post.yes} Yes</p>
               </div>
               <div className="text-center">
-                 {renderButton("maybe")} 
+                {renderButton("maybe")}
                 <p>{post.maybe} Maybe</p>
               </div>
               <div className="text-center">
                 <button
-                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
+                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
                 >
                   No
@@ -87,7 +94,7 @@ const Post = ({ post }) => {
             <div className="flex justify-end space-x-4">
               <div className="text-center">
                 <button
-                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
+                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
                 >
                   Yes
@@ -96,7 +103,7 @@ const Post = ({ post }) => {
               </div>
               <div className="text-center">
                 <button
-                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
+                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("maybe")}
                 >
                   Maybe
@@ -105,7 +112,7 @@ const Post = ({ post }) => {
               </div>
               <div className="text-center">
                 <button
-                  class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
+                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
                 >
                   No
@@ -116,38 +123,45 @@ const Post = ({ post }) => {
           </>
         );
       case "Poll":
-        const totalVotes = post.options.reduce((acc, option) => acc + option.votes, 0);
-        
+        const totalVotes = post.options.reduce(
+          (acc, option) => acc + option.votes,
+          0
+        );
+
         //maximum width required for the buttons
         const longestOptionLength = post.options.reduce((max, option) => {
           return Math.max(max, option.text.length);
         }, 0);
-        
 
         return (
           <>
-          <h5>{post.question}</h5>
+            <h5>{post.question}</h5>
             <div className="flex flex-col items-start">
               {post.options.map((option, index) => {
-                const votePercentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
+                const votePercentage =
+                  totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
                 // const votePercentage = (option.votes / totalVotes) * 100;
                 return (
                   <div key={index} className="w-full my-2">
                     <button
                       className="relative text-left w-full text-black font-bold py-2 px-3 text-base rounded focus:outline-none focus:shadow-outline overflow-hidden"
-                      style={{ border: '1px solid #000' }}
+                      style={{ border: "1px solid #000" }}
                       onClick={() => handlePollOptionClick(index)}
                     >
-                      <span style={{ zIndex: 2, position: 'relative' }}>
+                      <span style={{ zIndex: 2, position: "relative" }}>
                         {`${option.text} - ${option.votes}`}
                       </span>
                       <span
                         className="absolute top-0 left-0 h-full"
-                        style={{ width: `${votePercentage}%`, background: 'rgba(207,250,254,1)', zIndex: -1}}
+                        style={{
+                          width: `${votePercentage}%`,
+                          background: "rgba(207,250,254,1)",
+                          zIndex: -1,
+                        }}
                       ></span>
                       <span
                         className="absolute top-0 left-0 h-full w-full flex items-center justify-end pr-3"
-                        style={{ zIndex: 0, color: 'black' }}
+                        style={{ zIndex: 0, color: "black" }}
                       >
                         {votePercentage.toFixed(0)}%
                       </span>
@@ -157,10 +171,8 @@ const Post = ({ post }) => {
               })}
             </div>
           </>
-        );   
+        );
 
-  
-        
       case "Reminder":
         return (
           <>
@@ -177,15 +189,14 @@ const Post = ({ post }) => {
     }
   };
 
- 
-
-    return (
-      <div className="post">
-        <small>"{post.author}" {timeAgo}</small>
-        {renderPostContent()}
-      </div>
-    );
-
+  return (
+    <div className="post">
+      <small>
+        "{post.author}" {timeAgo}
+      </small>
+      {renderPostContent()}
+    </div>
+  );
 };
 
 export default Post;
