@@ -47,19 +47,26 @@ const useFirebase = () => {
     };
 
     // Function to fetch posts
-    const fetchPostsForGroup = (groupId, setPosts) => {
-        const q = query(collection(db, 'groups', groupId, 'posts'), limit(10)); // Can remove limit later and add orderBy('DatePosted')
-
+      const fetchPostsForGroup = (groupId, setPosts) => {
+        // Create a query to get the posts collection, sorted by 'createdAt' in descending order, with a limit of 10 posts
+        const q = query(
+            collection(db, 'groups', groupId, 'posts'),
+            orderBy('time', 'desc'), // Sort by the 'createdAt' field in descending order
+            limit(10) // You can adjust the limit or remove it if necessary
+        );
+    
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const posts = [];
             querySnapshot.forEach((doc) => {
+                // Spread operator to combine id with the document data
                 posts.push({ id: doc.id, ...doc.data() });
             });
             setPosts(posts);
         });
-
-        return unsubscribe; // Return the unsubscribe function to call it on component unmount
+    
+        return unsubscribe; // Return the unsubscribe function to be called on component unmount
     };
+    
 
     // Function to update posts with votes
     const updatePostOptions = async (groupId, postId, option) => {

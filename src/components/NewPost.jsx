@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import useFirebase from "../utilities/firebase";
+import { serverTimestamp } from 'firebase/firestore';
+
 
 const NewPost = ({ groupId, userID, closeModal }) => {
   const { addPostToGroup } = useFirebase();
@@ -16,6 +18,7 @@ const NewPost = ({ groupId, userID, closeModal }) => {
     options: [{ text: '', votes: 0 }], // add question to option
     text: "",
     link: "",
+    time: null
   });
 
   const handleInputChange = (e) => {
@@ -50,7 +53,13 @@ const NewPost = ({ groupId, userID, closeModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    addPostToGroup(groupId, formData);
+    const completeFormData = {
+      ...formData,
+      time: serverTimestamp()
+    };  
+
+    addPostToGroup(groupId, completeFormData);
+    
   };
 
   return (
