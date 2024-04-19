@@ -1,8 +1,22 @@
-// Firebase setup:
+// Firebase
 
 // SDKs import
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, addDoc, getDoc, getDocs, query, onSnapshot, orderBy, limit, updateDoc, increment } from "firebase/firestore";
+import { 
+  getFirestore, 
+  collection, 
+  doc, addDoc, 
+  getDoc, 
+  getDocs, 
+  query, 
+  onSnapshot, 
+  orderBy, 
+  limit, 
+  updateDoc, 
+  increment 
+} from "firebase/firestore";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
 
 // Firebase configuration
 /* const firebaseConfig = {
@@ -28,6 +42,7 @@ const firebaseConfig = {
 // Initialize Firebasenpm install firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const useFirebase = () => {
   
@@ -110,6 +125,24 @@ const useFirebase = () => {
       }
     };
 
+    // Function to sign in with Google
+    const signInWithGoogle = () => {
+      signInWithPopup(auth, new GoogleAuthProvider());
+    };
+
+    // Function to sign out
+    const signOutUser = () => signOut(auth);
+
+    // Function to get the current user
+    const useAuthState = () => {
+      const [user, setUser] = useState();
+      
+      useEffect(() => (
+        onAuthStateChanged(auth, setUser)
+      ), []);
+    
+      return [user];
+    };
   
     // Return the necessary functions and state
     return {
@@ -117,6 +150,9 @@ const useFirebase = () => {
       fetchPostsForGroup,
       updatePostOptions,
       updatePollVote, 
+      signInWithGoogle,
+      signOutUser,
+      useAuthState
     };
   };
   

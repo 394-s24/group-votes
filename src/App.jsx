@@ -4,8 +4,7 @@
 import React from "react";
 
 // Components impors
-import PostButton from "./components/PostButton";
-import Feed from "./components/Feed";
+import Dispatcher from "./components/Dispatcher";
 
 // CSS imports (add more after bootstrap)
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -32,13 +31,8 @@ const App = () => {
         Today is {day}, {date}.
       </p>
 
-      <Feed groupId="testGroupID" />
+      <Dispatcher />
 
-      <div style={{ height: "100px" }}></div>
-
-      <div style={{ position: "fixed", bottom: "30px", right: "30px" }}>
-        <PostButton />
-      </div>
     </div>
   );
 };

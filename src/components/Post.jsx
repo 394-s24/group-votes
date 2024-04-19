@@ -42,8 +42,8 @@ const Post = ({ post }) => {
               </a>
             )}
             {/* Yes, Maybe, No buttons */}
-            <div class="flex justify-end space-x-4  ">
-              <div class="text-center">
+            <div className="flex justify-end space-x-4  ">
+              <div className="text-center">
                 <button
                   class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
@@ -52,11 +52,11 @@ const Post = ({ post }) => {
                 </button>
                 <p>{post.yes} Yes</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                  {renderButton("maybe")} 
                 <p>{post.maybe} Maybe</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                 <button
                   class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
@@ -78,8 +78,8 @@ const Post = ({ post }) => {
               </a>
             )}
             {/* Yes, Maybe, No buttons */}
-            <div class="flex justify-end space-x-4">
-              <div class="text-center">
+            <div className="flex justify-end space-x-4">
+              <div className="text-center">
                 <button
                   class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("yes")}
@@ -88,7 +88,7 @@ const Post = ({ post }) => {
                 </button>
                 <p>{post.yes} Yes</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                 <button
                   class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("maybe")}
@@ -97,7 +97,7 @@ const Post = ({ post }) => {
                 </button>
                 <p>{post.maybe} Maybe</p>
               </div>
-              <div class="text-center">
+              <div className="text-center">
                 <button
                   class="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
                   onClick={() => handleOptionClick("no")}
@@ -122,27 +122,35 @@ const Post = ({ post }) => {
           <>
             <h5>{post.question}</h5>
             <div className="flex flex-col items-start">
-              {post.options.map((option, index) => (
-                <div key={index} className="flex items-center my-2 w-full">
-                  <button
-                    className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
-                    style={{ width: `${longestOptionLength * 20}px` }} // Set width to the width of the longest option
-                    onClick={() => handlePollOptionClick(index)}
-                  >
-                    {option.text}
-                  </button>
-                  <span className="pl-3 text-gray-700">{option.votes} Votes</span>
-                  <div className="bg-cyan-100 border-2 border-sky-900 w-full">
-                    <div
-                      className="bg-sky-900 h-4"
-                      style={{ width: `${(option.votes / totalVotes) * 100}%` }}
-                    ></div>
+              {post.options.map((option, index) => {
+                const votePercentage = (option.votes / totalVotes) * 100;
+                return (
+                  <div key={index} className="w-full my-2">
+                    <button
+                      className="relative text-left w-full text-white font-bold py-2 px-3 text-base rounded focus:outline-none focus:shadow-outline overflow-hidden"
+                      style={{ border: '1px solid #000' }}
+                      onClick={() => handlePollOptionClick(index)}
+                    >
+                      <span style={{ zIndex: 2, position: 'relative' }}>
+                        {`${option.text} - ${option.votes}`}
+                      </span>
+                      <span
+                        className="absolute top-0 left-0 h-full"
+                        style={{ width: `${votePercentage}%`, background: 'rgba(51,130,250,255)', zIndex: 1 }}
+                      ></span>
+                      <span
+                        className="absolute top-0 left-0 h-full w-full flex items-center justify-end pr-3"
+                        style={{ zIndex: 3, color: 'black' }}
+                      >
+                        {votePercentage.toFixed(0)}%
+                      </span>
+                    </button>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </>
-        );
+        );        
         
       case "Reminder":
         return (

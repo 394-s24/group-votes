@@ -1,5 +1,5 @@
 nav {
-    background-color: black;
+    background-color: rgb(209, 209, 209);
     font-size: 18pt;
     font-family: Arial;
     margin-bottom: 1em;
@@ -11,5 +11,5 @@ nav {
   }
   
   nav a.active {
-    color: cyan;
+    color: rgb(0, 119, 255);
   }
