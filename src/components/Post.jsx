@@ -1,7 +1,6 @@
 import React from "react";
 import "./feed.css";
 import useFirebase from "../utilities/firebase";
-import { serverTimestamp } from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
 
 const Post = ({ post }) => {
@@ -148,7 +147,7 @@ const Post = ({ post }) => {
                       style={{ border: "1px solid #000" }}
                       onClick={() => handlePollOptionClick(index)}
                     >
-                      <span style={{ zIndex: 2, position: "relative" }}>
+                      <span style={{ zIndex: 0, position: "relative" }}>
                         {`${option.text} - ${option.votes}`}
                       </span>
                       <span

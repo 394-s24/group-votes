@@ -24,8 +24,8 @@ const App = () => {
   return (
     <div className="container">
       <div className="logo-container">
-        <img src={iconLogo} alt="Icon Logo" className="logo-icon" />
-        <img src={textLogo} alt="Text Logo" className="logo-text" />
+        <img src={iconLogo} alt="" className="logo-icon" />
+        <img src={textLogo} alt="GroupVotes" className="logo-text" />
       </div>
       <p>
         Today is {day}, {date}.

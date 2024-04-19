@@ -5,11 +5,11 @@ import "./Navigation.css";
 const { signInWithGoogle, signOutUser, useAuthState } = useFirebase();
 
 const SignInButton = () => (
-  <button className="ms-auto btn btn-primary" onClick={signInWithGoogle}>Sign in</button>
+  <button className="ms-auto btn" onClick={signInWithGoogle}>Sign in</button>
 );
 
 const SignOutButton = () => (
-  <button className="ms-auto btn btn-primary" onClick={signOutUser}>Sign out</button>
+  <button className="ms-auto btn" onClick={signOutUser}>Sign out</button>
 );
 
 const AuthButton = () => {

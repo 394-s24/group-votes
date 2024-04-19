@@ -33,7 +33,7 @@ const Feed = ({ groupId }) => {
       
       <div style={{ height: "100px" }}></div>
 
-      <div style={{ position: "fixed", bottom: "30px", right: "30px" }}>
+      <div style={{ position: "fixed", bottom: "100px", right: "30px" }}>
         <PostButton />
       </div>
     </>
