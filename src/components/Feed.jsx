@@ -16,12 +16,12 @@ const Feed = () => {
     if (!groupId) return;
 
     const unsubscribe = fetchPostsForGroup(groupId, setPosts);
-
     return () => unsubscribe();
   }, [groupId, fetchPostsForGroup]);
 
   return (
     <div className="feed">
+      {/* {console.log("this is the groupID: ", groupId)} */}
       {posts.length === 0 ? (
         <h3>No posts found in this group. Make a new post or check back later.</h3>
       ) : (
