@@ -2,17 +2,21 @@ import React from "react";
 import "./feed.css";
 import useFirebase from "../utilities/firebase";
 import { formatDistanceToNow } from "date-fns";
+import { useGroup } from './GroupContext';
 
 const Post = ({ post }) => {
   const { updatePostOptions } = useFirebase(); // Use the useFirebase hook
   const { updatePollVote } = useFirebase();
+  const { currentGroup } = useGroup();
 
   const handleOptionClick = async (option) => {
-    await updatePostOptions("testGroupID", post.id, option); // Call the updatePostOptions function
+    if (!currentGroup) return;
+    await updatePostOptions(currentGroup.id, post.id, option); // Use the current group ID
   };
 
   const handlePollOptionClick = async (optionIndex) => {
-    await updatePollVote("testGroupID", post.id, optionIndex); // Call the updatePollVote function for "Poll" type
+    if (!currentGroup) return;
+    await updatePollVote(currentGroup.id, post.id, optionIndex); // Use the current group ID
   };
 
   // Calculate time ago using the 'createdAt' timestamp from the post

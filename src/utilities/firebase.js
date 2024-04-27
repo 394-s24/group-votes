@@ -82,6 +82,20 @@ const useFirebase = () => {
         return unsubscribe; // Return the unsubscribe function to be called on component unmount
     };
     
+    // Function to fetch groups
+    const fetchGroups = (setGroupsCallback) => {
+      const unsubscribe = onSnapshot(collection(db, 'groups'), (snapshot) => {
+        const groupsArray = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setGroupsCallback(groupsArray);
+      }, error => {
+        console.error("Error fetching groups: ", error);
+      });
+    
+      return unsubscribe; // Return the unsubscribe function
+    };
 
     // Function to update posts with votes
     const updatePostOptions = async (groupId, postId, option) => {
@@ -152,7 +166,8 @@ const useFirebase = () => {
       updatePollVote, 
       signInWithGoogle,
       signOutUser,
-      useAuthState
+      useAuthState,
+      fetchGroups
     };
   };
   

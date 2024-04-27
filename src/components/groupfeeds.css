@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.group-feeds {
+    position: relative;
+    padding-top: 10px; /* Space for the top border */
+    padding-bottom: 10px;
+}
+
+.group-feeds:before, .group-feeds:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: gray;
+}
+
+.group-feeds:before {
+    top: 0;
+}
+
+.group-feeds:after {
+    bottom: 0;
+}
+
+.group-item {
+    border-top: 2px solid gray;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.group-item:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none; /* Remove top border for the first group-item */
+}
+
+/* Since you're using Tailwind, you can also use utility classes directly in your JSX for some styles */
