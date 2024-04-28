@@ -19,7 +19,7 @@ import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signO
 import { useEffect, useState } from "react";
 
 // Firebase configuration
- const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyB_a5rcWWbKTJdIXBF4RgWyhaTCoQE6Rug",
   authDomain: "group-votes-app.firebaseapp.com",
   projectId: "group-votes-app",
