@@ -2,17 +2,21 @@ import React from "react";
 import "./feed.css";
 import useFirebase from "../utilities/firebase";
 import { formatDistanceToNow } from "date-fns";
+import { useGroup } from './GroupContext';
 
 const Post = ({ post }) => {
   const { updatePostOptions } = useFirebase(); // Use the useFirebase hook
   const { updatePollVote } = useFirebase();
+  const { currentGroup } = useGroup();
 
   const handleOptionClick = async (option) => {
-    await updatePostOptions("testGroupID", post.id, option); // Call the updatePostOptions function
+    if (!currentGroup) return;
+    await updatePostOptions(currentGroup.id, post.id, option); // Use the current group ID
   };
 
   const handlePollOptionClick = async (optionIndex) => {
-    await updatePollVote("testGroupID", post.id, optionIndex); // Call the updatePollVote function for "Poll" type
+    if (!currentGroup) return;
+    await updatePollVote(currentGroup.id, post.id, optionIndex); // Use the current group ID
   };
 
   // Calculate time ago using the 'createdAt' timestamp from the post
@@ -36,6 +40,21 @@ const Post = ({ post }) => {
     </button>
   );
   const renderPostContent = () => {
+    // Format date and time 
+    const formatDateTime = (dateTimeString) => {
+      // Check if the input is a valid date string
+      const date = new Date(dateTimeString);
+      if (isNaN(date)) {
+        // If the date isn't valid, return TBD
+        return "TBD";
+      }
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${month}/${day}/${year} ${hours}:${minutes}`;
+    };
     switch (post.postType) {
       case "Event":
         return (
@@ -43,7 +62,7 @@ const Post = ({ post }) => {
             <h5>{post.eventName}</h5>
             {post.eventStart && (
               <p>
-                {post.eventStart} {post.eventEnd}
+                {formatDateTime(post.eventStart)} - {formatDateTime(post.eventEnd)}
               </p>
             )}
             {post.eventLocation && <p>Location: {post.eventLocation}</p>}

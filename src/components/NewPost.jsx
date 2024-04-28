@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import useFirebase from "../utilities/firebase";
 import { serverTimestamp } from 'firebase/firestore';
+import { useGroup } from "./GroupContext";
 
 
 const NewPost = ({ groupId, userID, closeModal }) => {
   const { addPostToGroup } = useFirebase();
   const [postType, setPostType] = useState("Event");
+  const {currentGroup} = useGroup();
   const [formData, setFormData] = useState({
     author: userID,
     postType: postType,
@@ -52,13 +54,12 @@ const NewPost = ({ groupId, userID, closeModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log("this is the groupID", currentGroup.id)
     const completeFormData = {
       ...formData,
       time: serverTimestamp()
     };  
-
-    addPostToGroup(groupId, completeFormData);
+    addPostToGroup(currentGroup.id, completeFormData);
     
   };
 
