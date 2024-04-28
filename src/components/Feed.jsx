@@ -27,7 +27,9 @@ const Feed = () => {
       ) : (
         posts.map(post => <Post key={post.id} post={post} />)
       )}
-      <PostButton />
+      <div style={{ position: "fixed", bottom: "100px", right: "30px" }}>
+        <PostButton />
+      </div>
     </div>
   );
 };
