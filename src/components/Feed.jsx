@@ -17,7 +17,7 @@ const Feed = () => {
 
     const unsubscribe = fetchPostsForGroup(groupId, setPosts);
     return () => unsubscribe();
-  }, [groupId, fetchPostsForGroup]);
+  }, [groupId]);
 
   return (
     <div className="feed">

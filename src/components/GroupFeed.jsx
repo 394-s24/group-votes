@@ -17,7 +17,7 @@ const GroupFeeds = () => {
 
     // Unsubscribe on component unmount
     return () => unsubscribe();
-  }, [fetchGroups]);
+  }, []);
   const handleGroupClick = (group) => {
     setCurrentGroup(group); // Set the selected group as the current group globally
     navigate(`/feed/${group.id}`); // Navigate to the feed route with the group ID
