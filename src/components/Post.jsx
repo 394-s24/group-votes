@@ -3,16 +3,29 @@ import "./feed.css";
 import useFirebase from "../utilities/firebase";
 import { formatDistanceToNow } from "date-fns";
 import { useGroup } from './GroupContext';
+import { useState } from "react";
 
 const Post = ({ post }) => {
   const { updatePostOptions } = useFirebase(); // Use the useFirebase hook
   const { updatePollVote } = useFirebase();
   const { currentGroup } = useGroup();
 
+
+  const [selectedOption, setSelectedOption] = useState(null);
   const handleOptionClick = async (option) => {
-    if (!currentGroup) return;
-    await updatePostOptions(currentGroup.id, post.id, option); // Use the current group ID
+    // Check if the new option is different from the current option
+    if (option !== selectedOption) {
+      setSelectedOption(option); // Update the local state to reflect the new selected option
+      // Perform the asynchronous operation to update the post options
+      console.log(option)
+      await updatePostOptions("testGroupID", post.id, option);
+      console.log("Post options updated to:", option);
+    }
   };
+  // const handleOptionClick = async (option) => {
+  //   if (!currentGroup) return;
+  //   await updatePostOptions(currentGroup.id, post.id, option); // Use the current group ID
+  // };
 
   const handlePollOptionClick = async (optionIndex) => {
     if (!currentGroup) return;
@@ -30,15 +43,27 @@ const Post = ({ post }) => {
     timeAgo = "";
   }
 
+
   const renderButton = (option) => (
     <button
-      className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
-      // disabled={selectedOption === option}
+      className={`bg-cyan-100 border-2 border-sky-900 text-sky-900 font-bold py-2 px-3 text-base rounded ${
+        selectedOption && selectedOption !== option ? 'opacity-50 cursor-not-allowed' : 'hover:border-cyan-100 hover:bg-sky-900 hover:text-cyan-100'
+      }`}
       onClick={() => handleOptionClick(option)}
+      // disabled={selectedOption && selectedOption !== option}
     >
       {option.charAt(0).toUpperCase() + option.slice(1)}
     </button>
   );
+  // const renderButton = (option) => (
+  //   <button
+  //     className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
+  //     // disabled={selectedOption === option}
+  //     onClick={() => handleOptionClick(option)}
+  //   >
+  //     {option.charAt(0).toUpperCase() + option.slice(1)}
+  //   </button>
+  // );
   const renderPostContent = () => {
     // Format date and time 
     const formatDateTime = (dateTimeString) => {
@@ -74,26 +99,16 @@ const Post = ({ post }) => {
             )}
             {/* Yes, Maybe, No buttons */}
             <div className="flex justify-end space-x-4  ">
-              <div className="text-center">
-                <button
-                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
-                  onClick={() => handleOptionClick("yes")}
-                >
-                  Yes
-                </button>
-                <p>{post.yes} Yes</p>
-              </div>
+                <div className="text-center">
+                {renderButton("yes")}
+                  <p>{post.yes} Yes</p>
+                </div>
               <div className="text-center">
                 {renderButton("maybe")}
                 <p>{post.maybe} Maybe</p>
               </div>
               <div className="text-center">
-                <button
-                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
-                  onClick={() => handleOptionClick("no")}
-                >
-                  No
-                </button>
+                {renderButton("no")}
                 <p>{post.no} No</p>
               </div>
             </div>
@@ -109,32 +124,17 @@ const Post = ({ post }) => {
               </a>
             )}
             {/* Yes, Maybe, No buttons */}
-            <div className="flex justify-end space-x-4">
+            <div className="flex justify-end space-x-4  ">
+                <div className="text-center">
+                {renderButton("yes")}
+                  <p>{post.yes} Yes</p>
+                </div>
               <div className="text-center">
-                <button
-                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
-                  onClick={() => handleOptionClick("yes")}
-                >
-                  Yes
-                </button>
-                <p>{post.yes} Yes</p>
-              </div>
-              <div className="text-center">
-                <button
-                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
-                  onClick={() => handleOptionClick("maybe")}
-                >
-                  Maybe
-                </button>
+                {renderButton("maybe")}
                 <p>{post.maybe} Maybe</p>
               </div>
               <div className="text-center">
-                <button
-                  className="bg-cyan-100 border-2 border-sky-900 hover:border-cyan-100 hover:bg-sky-900 text-sky-900 hover:text-cyan-100 font-bold py-2 px-3 text-base rounded"
-                  onClick={() => handleOptionClick("no")}
-                >
-                  No
-                </button>
+                {renderButton("no")}
                 <p>{post.no} No</p>
               </div>
             </div>
