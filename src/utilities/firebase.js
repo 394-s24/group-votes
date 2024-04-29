@@ -19,25 +19,25 @@ import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signO
 import { useEffect, useState } from "react";
 
 // Firebase configuration
-/* const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyB_a5rcWWbKTJdIXBF4RgWyhaTCoQE6Rug",
   authDomain: "group-votes-app.firebaseapp.com",
   projectId: "group-votes-app",
   storageBucket: "group-votes-app.appspot.com",
   messagingSenderId: "472218547440",
   appId: "1:472218547440:web:e2dfedfa759bce6aba7e35"
-}; */
+}; 
 
 //TESTING CONFIG
-const firebaseConfig = {
-    apiKey: "AIzaSyAWrjtBrxpT9THsfhg-lwQnqpeF7T3v9Eg",
-    authDomain: "group-votes-ce1dd.firebaseapp.com",
-    projectId: "group-votes-ce1dd",
-    storageBucket: "group-votes-ce1dd.appspot.com",
-    messagingSenderId: "275690848987",
-    appId: "1:275690848987:web:2859ab03aedb8887fe02fe",
-    measurementId: "G-H1RNPT1QS4"
-  };
+// const firebaseConfig = {
+//     apiKey: "AIzaSyAWrjtBrxpT9THsfhg-lwQnqpeF7T3v9Eg",
+//     authDomain: "group-votes-ce1dd.firebaseapp.com",
+//     projectId: "group-votes-ce1dd",
+//     storageBucket: "group-votes-ce1dd.appspot.com",
+//     messagingSenderId: "275690848987",
+//     appId: "1:275690848987:web:2859ab03aedb8887fe02fe",
+//     measurementId: "G-H1RNPT1QS4"
+//   };
 
 // Initialize Firebasenpm install firebase
 const app = initializeApp(firebaseConfig);
