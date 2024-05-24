@@ -1,19 +1,21 @@
-import {describe, expect, test} from 'vitest';
-import {fireEvent, render, screen} from '@testing-library/react';
+import { describe, expect, test } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
-describe('counter tests', () => {
-    
-  test("Counter should be 0 at the start", () => {
+describe('App component tests', () => {
+
+  test("should display today's date", () => {
     render(<App />);
-    expect(screen.getByText('count is: 0')).toBeDefined();
+    const today = new Date();
+    const day = today.toLocaleString([], { weekday: "long" });
+    const date = today.toLocaleDateString([], { dateStyle: "long" });
+    const dateText = screen.getByText(`Today is ${day}, ${date}.`);
+    expect(dateText).toBeDefined();
   });
 
-  test("Counter should increment by one when clicked", async () => {
+  test("should render the Dispatcher component", () => {
     render(<App />);
-    const counter = screen.getByRole('button');
-    fireEvent.click(counter);
-    expect(await screen.getByText('count is: 1')).toBeDefined();
+    const dispatcherElement = screen.getByTestId('dispatcher-component');
+    expect(dispatcherElement).toBeDefined();
   });
-
 });

@@ -4,6 +4,7 @@ import Feed from './Feed';
 import GroupFeeds from './GroupFeed';
 
 const Dispatcher = () => (
+  <div data-testid="dispatcher-component">
   <BrowserRouter>
   
     <Routes>
@@ -18,6 +19,7 @@ const Dispatcher = () => (
     </div>
 
   </BrowserRouter>
+  </div>
 );
 
 export default Dispatcher;
