@@ -22,7 +22,7 @@
   "devDependencies": {
     "@testing-library/react": "^14.2.2",
     "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/coverage-v8": "^1.4.0",
+    "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.4.0",
     "autoprefixer": "^10.4.19",
     "jsdom": "^24.0.0",
