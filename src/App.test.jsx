@@ -1,8 +1,26 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi, beforeEach} from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
+import Navigation from "./components/Navigation";
+import AuthButton from "./components/Navigation";
+import useFireBase from './utilities/firebase';
+import { unsubscribe } from "diagnostics_channel";
+import { collection, onSnapshot } from "firebase/firestore";
+import { onAuthStateChanged } from 'firebase/auth';
+import { useData, useUserState } from './utilities/firebase';
 
+
+vi.mock('hooks/useData', () => ({
+  useData: vi.fn()
+}));
+// const mockVotes = {
+//   "title": "Mock Event Votes for 2024",
+//   "events": { }
+// };
+const mockVotes = {
+  "title": "Mock Event Votes for 2024",
+};
 describe("App component tests", () => {
   test("should display today's date", () => {
     render(<App />);
@@ -28,28 +46,32 @@ describe("App component tests", () => {
     expect(message).toBeDefined();
   });
 
-  test("should open modal on link click", async () => {
-    render(<App />);
-    const link = screen.getByRole("link", { name: /open modal/i });
-    userEvent.click(link);
+  test("log in", async () => {
+      render(<App />);
 
-    const modal = await screen.findByRole("dialog");
-    expect(modal).toBeDefined();
-    expect(modal).toHaveTextContent(/this is a modal/i);
+      expect(screen.getByRole("button", {name: /Sign In/i})).toBeDefined();
   });
 
-  test("should update input value and submit form", async () => {
+  // test("pulling the feed mock data", () => {
+  //    const{fetchGroups} = useFireBase();
+  //    vi.spyOn( useFireBase(),"fetchGroups" ).mockImplementation(()=> {
+  //       const groupId = "aasdfb!2234";
+  //       const unsubscribe = () => {};  // Mock unsubscribe function
+  //       return unsubscribe;
+  //    });
+  //    render(<App />);
+  //    expect().toHaveBeenCalled();
+
+  // });
+
+  it('uses mock data for events', () => {
+    useData.mockReturnValue([mockVotes, false, true]);
+    // useUserState.mockReturnValue([null]);
     render(<App />);
-    const input = screen.getByLabelText(/name/i);
-    const submitButton = screen.getByRole("button", { name: /submit/i });
-
-    userEvent.type(input, "Hyunbin Lee");
-    userEvent.click(submitButton);
-
-    const successMessage = await screen.findByText(
-      /form submitted successfully/i
-    );
-    expect(successMessage).toBeDefined();
-    expect(successMessage).toHaveTextContent("Hyunbin Lee");
+    const title = screen.getByText(/Mock Event Votes for 2024/i);
+    expect(title).toBeInTheDocument();
   });
 });
+
+
+
