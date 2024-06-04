@@ -52,6 +52,8 @@ describe("App component tests", () => {
       expect(screen.getByRole("button", {name: /Sign In/i})).toBeDefined();
   });
 
+
+  
   // test("pulling the feed mock data", () => {
   //    const{fetchGroups} = useFireBase();
   //    vi.spyOn( useFireBase(),"fetchGroups" ).mockImplementation(()=> {
@@ -72,6 +74,8 @@ describe("App component tests", () => {
     expect(title).toBeInTheDocument();
   });
 });
+
+
 
 
 

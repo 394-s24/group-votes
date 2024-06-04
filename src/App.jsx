@@ -1,60 +1,41 @@
-import { render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
-import App from './App';
-import { useData, useUserState } from './firebase';
+import React from "react";
 
-vi.mock('./firebase');
+// Components impors
+import Dispatcher from "./components/Dispatcher";
+import { GroupProvider } from './components/GroupContext';
 
-const mockVotes = {
-  "title": "Mock Event Votes for 2024",
-  "events": { }
+// CSS imports (add more after bootstrap)
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./App.css";
+
+// Logo imports
+import iconLogo from "./assets/logos/iconlogogroupvotes.png";
+import textLogo from "./assets/logos/textlogogroupvotes.png";
+
+
+// Main App
+const App = () => {
+  const today = new Date();
+  const day = today.toLocaleString([], { weekday: "long" });
+  const date = today.toLocaleDateString([], { dateStyle: "long" });
+
+  return (
+    <GroupProvider> 
+      <div className="container">
+        <div className="logo-container">
+          <img src={iconLogo} alt="" className="logo-icon" />
+          <img src={textLogo} alt="GroupVotes" className="logo-text" />
+        </div>
+        <p>
+          Today is {day}, {date}.
+        </p>
+
+        <Dispatcher /> 
+
+      </div>
+    </GroupProvider>
+  );
 };
 
-describe('App component tests', () => {
-  it('shows today\'s date', () => {
-    render(<App />);
-    const today = new Date();
-    const day = today.toLocaleString([], { weekday: "long" });
-    const date = today.toLocaleDateString([], { dateStyle: "long" });
-    const dateText = screen.getByText(`Today is ${day}, ${date}.`);
-    expect(dateText).toBeInTheDocument();
-  });
-
-  it('renders the Dispatcher component', () => {
-    render(<App />);
-    const dispatcherElement = screen.getByTestId('dispatcher-component');
-    expect(dispatcherElement).toBeInTheDocument();
-  });
-
-  it('uses mock data for events', () => {
-    useData.mockReturnValue([mockVotes, false, null]);
-    useUserState.mockReturnValue([null]);
-    render(<App />);
-    const title = screen.getByText(/Mock Event Votes for 2024/i);
-    expect(title).toBeInTheDocument();
-  });
-
-  it('shows Sign In if not logged in', () => {
-    useData.mockReturnValue([mockVotes, false, null]);
-    useUserState.mockReturnValue([null]);
-    render(<App />);
-    const button = screen.getByText(/Sign In/i);
-    expect(button).toBeInTheDocument();
-  });
-
-  it('shows Sign Out if logged in', () => {
-    useData.mockReturnValue([mockVotes, false, null]);
-    useUserState.mockReturnValue([{ displayName: 'Joe' }]);
-    render(<App />);
-    const button = screen.getByText(/Sign Out/i);
-    expect(button).toBeInTheDocument();
-  });
-
-  it('asks for data once with a schedule path', () => {
-    useData.mockReturnValue([mockVotes, false, null]);
-    useUserState.mockReturnValue([null]);
-    render(<App />);
-    expect(useData).toHaveBeenCalledTimes(1);
-    expect(useData).toHaveBeenCalledWith('/schedule', expect.any(Function));
-  });
-});
+export default App;

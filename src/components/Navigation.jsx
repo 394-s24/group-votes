@@ -16,7 +16,7 @@ const AuthButton = () => {
   const [user] = useAuthState();
   return user ? <SignOutButton /> : <SignInButton />;
 };
-
+export {AuthButton};
 const activation = ({isActive}) => isActive ? 'active' : 'inactive';
 
 const Navigation = () => (
