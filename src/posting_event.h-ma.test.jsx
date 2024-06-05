@@ -12,13 +12,12 @@ import { fetchPostsForGroup } from './utilities/firebase';
 import NewPost from "./components/NewPost";
 import Feed from "./components/Feed";
 import {GroupProvider} from "./components/GroupContext"
-
+import { useParams } from 'react-router-dom';
 
 vi.mock('react-router-dom', () => ({
-    useParams: vi.fn().mockReturnValue({ groupId: 'test-group' })
-  }));
+    useParams : vi.fn().mockReturnValue({ groupId : 'testGroupID' }),
+}));
   
-  // Mock the custom hook that provides fetchPostsForGroup
 vi.mock('./utilities/firebase', () => ({
     default: () => ({
         fetchPostsForGroup: (groupId, setPosts) => {
@@ -37,10 +36,10 @@ vi.mock('./utilities/firebase', () => ({
 }));
 
 describe("event testing", () => {
-    it("voting on event", async () =>{
+    test("voting on event", async () =>{
         render(<GroupProvider><Feed /></GroupProvider>);
         expect(screen.getByText(/testEvent1/i));
-
+ 
     })
 });
 
